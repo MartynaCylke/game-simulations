@@ -28,3 +28,13 @@ def test_no_clusters():
 
     wins = calculate_cluster_wins(reels)
     assert wins == [], "Nie powinno być klastrów"
+def calculate_cluster_wins(board):
+    game = ClusterGame(config=DummyConfig())
+    result = game.play_once(sim_index=0)
+    return result["clusters"]
+
+# DummyConfig potrzebne do uruchomienia funkcji samodzielnie
+class DummyConfig:
+    symbol_pool = ["A","B","C","D"]
+    num_reels = 6
+    num_rows = 5
