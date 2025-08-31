@@ -1,18 +1,10 @@
-# src/executables/game_executables.py
-import os
 from src.executables.executables import run_single_game
-from src.config import config
 
-def run_game_simulation(game: str, sims: int = 10, books_path=None, lookup_path=None):
+def run_game_simulation(game: str, sims: int = 10, target_rtp: float = 0.96):
     """
-    Wrapper to run a game simulation with optional custom paths.
+    Uruchamia symulację danej gry.
+    :param game: "lines", "ways", "cluster" lub "scatter"
+    :param sims: liczba symulacji
+    :param target_rtp: docelowe RTP (0.96 = 96%)
     """
-    if books_path is None:
-        books_path = config.BOOKS_DIR
-    if lookup_path is None:
-        lookup_path = config.LOOKUP_DIR
-
-    os.makedirs(books_path, exist_ok=True)
-    os.makedirs(lookup_path, exist_ok=True)
-
-    return run_single_game(game=game, sims=sims, books_path=books_path, lookup_path=lookup_path)
+    return run_single_game(game=game, sims=sims, target_rtp=target_rtp)

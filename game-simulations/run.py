@@ -1,52 +1,21 @@
-# run.py
+#!/usr/bin/env python3
 import argparse
-from src.executables.game_executables import LinesGameExecutable, WaysGameExecutable, ClusterGameExecutable, ScatterGameExecutable
-
-GAME_MAP = {
-    "lines": LinesGameExecutable,
-    "ways": WaysGameExecutable,
-    "cluster": ClusterGameExecutable,
-    "scatter": ScatterGameExecutable,
-}
-
-def print_board(board):
-    """Wyświetla planszę w terminalu w czytelnej formie."""
-    if not board:
-        return
-    rows = len(board[0])
-    cols = len(board)
-    for r in range(rows):
-        row_symbols = [board[c][r] if board[c][r] is not None else "." for c in range(cols)]
-        print(" | ".join(row_symbols))
-    print("-" * (cols * 4 - 1))
+from src.executables.game_executables import run_game_simulation
 
 def main():
     parser = argparse.ArgumentParser(description="Run game simulations")
-    parser.add_argument("--game", type=str, required=True, help="Game type: lines, ways, cluster, scatter")
-    parser.add_argument("--sims", type=int, default=10, help="Number of simulations")
+    parser.add_argument("--game", type=str, required=True, choices=["lines", "ways", "cluster", "scatter"],
+                        help="Type of game to simulate")
+    parser.add_argument("--sims", type=int, default=10, help="Number of simulations to run")
+    parser.add_argument("--rtp", type=float, default=0.96, help="Target RTP (Return To Player) as decimal, e.g., 0.96")
     args = parser.parse_args()
 
-    if args.game not in GAME_MAP:
-        print(f"Error: invalid game type '{args.game}'. Choose from {list(GAME_MAP.keys())}")
-        return
+    print(f"Running {args.sims} simulations for '{args.game}' with target RTP {args.rtp*100:.2f}%...")
 
-    GameClass = GAME_MAP[args.game]
-    game = GameClass()
+    result = run_game_simulation(game=args.game, sims=args.sims, target_rtp=args.rtp)
 
-    num_sims = args.sims
-    print(f"Running {num_sims} simulations for '{args.game}' game...\n")
-
-    for sim_index in range(num_sims):
-        result = game.play_once(sim_index)
-        board = result.get("board", [])
-        payout = result.get("payout", 0)
-        wins = result.get("clusters", []) or result.get("lines", [])
-        
-        print(f"Sim {sim_index + 1}/{num_sims}: payout {payout}")
-        print_board(board)
-        print(f"Wins: {wins}\n")
-
-    print(f"Finished. Books: {game.books_file} Lookup: {game.lookup_file}")
+    print("Simulation finished.")
+    print(f"Results saved to Books and Lookup Tables.")
 
 if __name__ == "__main__":
     main()
