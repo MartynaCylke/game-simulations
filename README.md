@@ -1,7 +1,18 @@
 # Game Simulations
 
-Python tools for simulating slot-game mechanics, including lines, ways,
-scatter wins, clusters, and tumbling reels.
+[![CI](https://github.com/MartynaCylke/game-simulations/actions/workflows/ci.yml/badge.svg)](https://github.com/MartynaCylke/game-simulations/actions/workflows/ci.yml)
+
+A modular Python toolkit for simulating and analysing slot-game mechanics. The
+project covers line, ways, scatter, cluster and tumbling-reel calculations and
+includes automated unit and integration tests.
+
+## Highlights
+
+- separate calculation modules for the main win mechanics;
+- configurable game and simulation parameters;
+- generation and analysis of lookup tables and RTP data;
+- deterministic unit tests plus end-to-end integration coverage;
+- CI across multiple supported Python versions.
 
 ## Requirements
 
